@@ -1,25 +1,33 @@
 package org.ehsan.controller
 
 import org.ehsan.annotation.ApiMapping
-import org.ehsan.dto.CreateDto
+import org.ehsan.dto.UserCreateDto
+import org.ehsan.dto.UserDto
+import org.ehsan.service.UserService
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 
 @ApiMapping
-class RestApiController {
-    @GetMapping("rest")
-    fun get(): ResponseEntity<String> {
-        Thread.sleep(3000)
-        return ResponseEntity("hello world", HttpStatus.OK)
+class RestApiController @Autowired constructor(
+    private val userService: UserService
+) {
+    @PostMapping("user")
+    fun save(@RequestBody create: UserCreateDto): ResponseEntity<UserDto> {
+        return ResponseEntity(userService.save(create), HttpStatus.CREATED)
     }
 
-    @PostMapping("rest/{name}")
-    fun post(
-        @PathVariable name: String,
-        @RequestParam age: Int,
-        @RequestBody create: CreateDto
-    ): ResponseEntity<String> {
-        return ResponseEntity("hi $name age:$age family: ${create.family} work: ${create.work}", HttpStatus.CREATED)
+    @GetMapping("user/{id}")
+    fun save(@PathVariable id: String): ResponseEntity<UserDto> {
+        val user = userService.get(id)
+        return if (user == null) {
+            ResponseEntity(HttpStatus.NOT_FOUND)
+        } else {
+            ResponseEntity(user, HttpStatus.OK)
+        }
     }
 }
