@@ -10,7 +10,9 @@ class MultiTenantMongoDbFactory(
     dbName: String
 ) : SimpleMongoClientDbFactory(mongoClient, dbName) {
     override fun getMongoDatabase(): MongoDatabase {
-        val tenant = TenantContext.getCurrentTenant()
+        var tenant = TenantContext.getCurrentTenant()
+        if (tenant == null)
+            tenant = "ehsan"
         return getMongoDatabase(tenant)
     }
 }

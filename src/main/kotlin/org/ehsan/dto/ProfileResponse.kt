@@ -1,10 +1,10 @@
 package org.ehsan.dto
 
-data class UserDto(
+
+data class ProfileResponse(
     val id: String,
     val phone: Long,
     val name: String,
     val family: String,
-    val pass: String,
     val roles: List<UserRole>
 )
